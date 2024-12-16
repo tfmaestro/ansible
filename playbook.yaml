@@ -1,0 +1,10 @@
+- hosts: webapp
+  become: true
+
+  roles:
+    - { role: base_server_configuration, tags: base }
+
+  tasks:
+    - name: Display OS version
+      debug:
+        msg: "The operating system is {{ ansible_distribution }} {{ ansible_distribution_version }}"

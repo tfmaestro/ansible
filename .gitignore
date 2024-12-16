@@ -1,0 +1,11 @@
+*.retry
+*.log
+*.yml~
+.venv/
+env/
+venv/
+*.pyc
+.DS_Store
+Thumbs.db
+*.swp
+*.vault_pass

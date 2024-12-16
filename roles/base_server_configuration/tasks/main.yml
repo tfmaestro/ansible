@@ -1,0 +1,45 @@
+- name: Install packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages }}"
+  when: packages is defined and packages | length > 0
+  tags: install_packages
+
+- name: Add job triggering apt cache cleaning
+  ansible.builtin.cron:
+    cron_file: '/etc/crontab'
+    user: 'root'
+    name: 'apt'
+    minute: '0'
+    hour: '*/8'
+    job: 'apt-get clean'
+    state: present
+  tags: apt_cache
+
+- name: Create users
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    state: present
+    shell: /bin/bash
+    create_home: yes
+  loop: "{{ user_accounts }}"
+  tags: create_users
+
+- name: Create .ssh directory for users
+  file:
+    path: "/home/{{ item.name }}/.ssh"
+    state: directory
+    mode: '0700'
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+  loop: "{{ user_accounts }}"
+  tags: create_users
+
+- name: Copy authorized_keys for all specified users
+  ansible.builtin.authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ lookup('file', 'roles/base_server_configuration/files/' + item.authorized_keys[0]) }}"
+    state: present
+  loop: "{{ user_accounts }}"
+  tags: create_users
