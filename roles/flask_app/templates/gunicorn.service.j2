@@ -1,0 +1,17 @@
+[Unit]
+Description=Gunicorn instance to serve Flask application
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/webapp
+Environment="DB_HOST={{ db_host }}"
+Environment="DB_USER={{ db_user }}"
+Environment="DB_PASSWORD={{ db_password }}"
+Environment="DB_NAME={{ db_name }}"
+ExecStart=/usr/local/bin/gunicorn --workers 2 --bind 0.0.0.0:8080 app:app
+
+[Install]
+WantedBy=multi-user.target
+
