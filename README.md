@@ -59,3 +59,8 @@ Przykład deployu roli base_server_configuration:
 ansible-playbook -i inventory.ini playbook.yaml --limit base
 ```
 
+W przypadku deployu roli flask_app, gdzie znajdują się zaszyfrowane secrety wywołaj deploy z dodaniem opcji `--ask-vault-pass`.
+```
+ansible-playbook -i inventory.ini playbook.yaml -t app_deploy --limit <ADRES_IP_MASZYNY> --ask-vault-pass
+```
+

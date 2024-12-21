@@ -3,6 +3,7 @@
 
   roles:
     - { role: base_server_configuration, tags: base }
+    - { role: flask_app, tags: app_deploy}
 
   tasks:
     - name: Display OS version
