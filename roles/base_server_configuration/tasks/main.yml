@@ -6,15 +6,15 @@
   when: packages is defined and packages | length > 0
   tags: install_packages
 
-- name: Add job triggering apt cache cleaning
+- name: Add job triggering apt cache cleaning to cron.d
   ansible.builtin.cron:
-    cron_file: '/etc/crontab'
-    user: 'root'
-    name: 'apt'
+    name: 'apt-get-clean'
     minute: '0'
     hour: '*/8'
     job: 'apt-get clean'
+    user: 'root'
     state: present
+    cron_file: '/etc/cron.d/apt-get-clean'
   tags: apt_cache
 
 - name: Create users
